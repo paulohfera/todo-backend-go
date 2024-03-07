@@ -8,10 +8,10 @@ type Task struct {
 	ID            int
 	Title         string
 	Description   string
-	Due           time.Time
+	Due           *time.Time
 	Done          bool
 	CreatedAt     time.Time
-	UpdatedAt     time.Time
+	UpdatedAt     *time.Time
 	Notifications []string
 }
 
@@ -27,7 +27,7 @@ func (i *Task) Validate() bool {
 	return len(i.Notifications) == 0
 }
 
-func NewTask(title string, description string, due time.Time) *Task {
+func NewTask(title string, description string, due *time.Time) *Task {
 	return &Task{
 		ID:            0,
 		Title:         title,
@@ -35,7 +35,7 @@ func NewTask(title string, description string, due time.Time) *Task {
 		Due:           due,
 		Done:          false,
 		CreatedAt:     time.Now(),
-		UpdatedAt:     time.Time{},
+		UpdatedAt:     nil,
 		Notifications: []string{},
 	}
 }

@@ -3,10 +3,12 @@ package repository_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/paulohfera/todo-backend-go/configuration"
 	"github.com/paulohfera/todo-backend-go/data/db"
 	"github.com/paulohfera/todo-backend-go/data/repository"
+	"github.com/paulohfera/todo-backend-go/domain/entity"
 )
 
 func TestTaskRepository(t *testing.T) {
@@ -15,7 +17,6 @@ func TestTaskRepository(t *testing.T) {
 		ctx := context.Background()
 		config := configuration.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
-		defer conn.Close()
 
 		taskReposytory := repository.NewTaskReposytory(conn)
 		_, err := taskReposytory.Get(ctx, 1)
@@ -24,12 +25,52 @@ func TestTaskRepository(t *testing.T) {
 		}
 	})
 
+	t.Run("When get task 0 no rows should return", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		_, err := taskReposytory.Get(ctx, 0)
+		if err == nil {
+			t.Errorf("Error getting task 0.")
+		}
+	})
+
+	t.Run("When insert valid task should not retunr error", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		due := time.Now().AddDate(0, 1, 0)
+		task := entity.NewTask("task unity test", "unit test", &due)
+		err := taskReposytory.Add(ctx, *task)
+		if err != nil {
+			t.Errorf("Error adding new valid task.")
+		}
+	})
+
+	t.Run("When get task list get a slice of task", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		tasks, err := taskReposytory.List(ctx)
+		if err != nil {
+			t.Errorf("Error getting task list.")
+		}
+
+		if tasks[0].ID == 0 {
+			t.Errorf("Error getting task list.")
+		}
+	})
+
 	t.Run("When get connection again get the same connection", func(t *testing.T) {
 		config := configuration.GetConfigurations()
 		want := db.NewOrGetSingleton(config)
 		got := db.NewOrGetSingleton(config)
-		defer got.Close()
-		defer want.Close()
 
 		if got != want {
 			t.Errorf("got %v, wanted %v", got, want)

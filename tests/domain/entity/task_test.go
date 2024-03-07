@@ -2,14 +2,13 @@ package entity_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/paulohfera/todo-backend-go/domain/entity"
 )
 
 func TestDomainEntityTask(t *testing.T) {
 	t.Run("When mandatory parameters are missing task must retun not valid", func(t *testing.T) {
-		item := entity.NewTask("", "", time.Now())
+		item := entity.NewTask("", "", nil)
 
 		got := item.Validate()
 		want := false
@@ -20,7 +19,7 @@ func TestDomainEntityTask(t *testing.T) {
 	})
 
 	t.Run("When all mandatory parameters are ok task must retun valid", func(t *testing.T) {
-		item := entity.NewTask("title", "description", time.Now())
+		item := entity.NewTask("title", "description", nil)
 
 		got := item.Validate()
 		want := true
