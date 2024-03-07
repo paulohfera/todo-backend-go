@@ -1,11 +1,11 @@
-package domain
+package entity
 
 import (
 	"time"
 )
 
-type Item struct {
-	Id            int
+type Task struct {
+	ID            int
 	Title         string
 	Description   string
 	Due           time.Time
@@ -15,7 +15,7 @@ type Item struct {
 	Notifications []string
 }
 
-func (i *Item) Validate() bool {
+func (i *Task) Validate() bool {
 	if i.Title == "" {
 		i.Notifications = append(i.Notifications, "Title cannot be empty")
 	}
@@ -27,12 +27,15 @@ func (i *Item) Validate() bool {
 	return len(i.Notifications) == 0
 }
 
-func NewItem(title string, description string, due time.Time) *Item {
-	return &Item{
-		Title:       title,
-		Description: description,
-		Due:         due,
-		Done:        false,
-		CreatedAt:   time.Now(),
+func NewTask(title string, description string, due time.Time) *Task {
+	return &Task{
+		ID:            0,
+		Title:         title,
+		Description:   description,
+		Due:           due,
+		Done:          false,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Time{},
+		Notifications: []string{},
 	}
 }

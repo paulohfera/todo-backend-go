@@ -1,3 +1,6 @@
+include .env
+export
+
 BINARY_NAME=todo
 
 build: build-mac-arm #Replace for the default environment
@@ -38,13 +41,18 @@ lint: ### check by golangci linter
 	golangci-lint run
 .PHONY: lint
 
+migrate-up: ### migration up
+	migrate -path migrations -database '$(PG_URL)?sslmode=disable' up
+.PHONY: migrate-up
+
 run:
 	go run main.go
 .PHONY: run
 
 setup-mac: ### setup mac os dependencies to run all tasks
 	brew install golangci-lint
-	brew install openapi-generator
+	brew install golang-migrate
+	# brew install openapi-generator
 .PHONY: setup-mac
 
 test:

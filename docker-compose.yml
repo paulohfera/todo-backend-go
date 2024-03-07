@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16.2
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "TODO"
+    ports:
+      - 5432:5432
+volumes:
+  pg-data:
