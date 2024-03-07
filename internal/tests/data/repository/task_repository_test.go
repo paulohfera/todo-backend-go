@@ -5,17 +5,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/paulohfera/todo-backend-go/configuration"
-	"github.com/paulohfera/todo-backend-go/data/db"
-	"github.com/paulohfera/todo-backend-go/data/repository"
-	"github.com/paulohfera/todo-backend-go/domain/entity"
+	"github.com/paulohfera/todo-backend-go/configs"
+	"github.com/paulohfera/todo-backend-go/internal/data/repository"
+	"github.com/paulohfera/todo-backend-go/internal/domain/entity"
+	db "github.com/paulohfera/todo-backend-go/pkg/postgres"
 )
 
 func TestTaskRepository(t *testing.T) {
 
 	t.Run("When get task 1 get one task", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -27,7 +27,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When get task 0 no rows should return", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -39,7 +39,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When get task list get a slice of task", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -55,7 +55,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When insert valid task should not retunr error", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -69,7 +69,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When update valid task should not retunr error", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -87,7 +87,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When id is valid should delete and not retunr error", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -99,7 +99,7 @@ func TestTaskRepository(t *testing.T) {
 
 	t.Run("When id is valid should complete and not retunr error", func(t *testing.T) {
 		ctx := context.Background()
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
@@ -110,7 +110,7 @@ func TestTaskRepository(t *testing.T) {
 	})
 
 	t.Run("When get connection again get the same connection", func(t *testing.T) {
-		config := configuration.GetConfigurations()
+		config := configs.GetConfigurations()
 		want := db.NewOrGetSingleton(config)
 		got := db.NewOrGetSingleton(config)
 

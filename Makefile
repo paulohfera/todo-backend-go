@@ -7,19 +7,19 @@ build: build-mac-arm #Replace for the default environment
 .PHONY: build
 
 build-linux:
-	GOOS=linux GOARCH=amd64 go build -o bin/linux-amd64/${BINARY_NAME} main.go
+	GOOS=linux GOARCH=amd64 go build -o bin/linux-amd64/${BINARY_NAME} ./cmd/api-server
 .PHONY: build-linux
 
 build-mac-amd:
-	GOOS=darwin GOARCH=amd64 go build -o bin/darwin-amd64/${BINARY_NAME} main.go
+	GOOS=darwin GOARCH=amd64 go build -o bin/darwin-amd64/${BINARY_NAME} ./cmd/api-server
 .PHONY: build-mac-amd
 
 build-mac-arm:
-	GOOS=darwin GOARCH=arm64 go build -o bin/darwin-arm64/${BINARY_NAME} main.go
+	GOOS=darwin GOARCH=arm64 go build -o bin/darwin-arm64/${BINARY_NAME} ./cmd/api-server
 .PHONY: build-mac-arm
 
 build-win:
-	GOOS=windows GOARCH=amd64 go build -o bin/windows-amd64/${BINARY_NAME} main.go
+	GOOS=windows GOARCH=amd64 go build -o bin/windows-amd64/${BINARY_NAME} ./cmd/api-server
 .PHONY: build-win
 
 clean:
@@ -56,5 +56,5 @@ setup-mac: ### setup mac os dependencies to run all tasks
 .PHONY: setup-mac
 
 test:
-	go test -v -coverpkg=./... ./tests/...
+	go test -v -coverpkg=./internal/... ./internal/tests/...
 .PHONY: test

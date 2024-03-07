@@ -3,7 +3,7 @@ package entity_test
 import (
 	"testing"
 
-	"github.com/paulohfera/todo-backend-go/domain/entity"
+	"github.com/paulohfera/todo-backend-go/internal/domain/entity"
 )
 
 func TestDomainEntityTask(t *testing.T) {

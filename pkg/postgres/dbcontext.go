@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/paulohfera/todo-backend-go/configuration"
+	"github.com/paulohfera/todo-backend-go/configs"
 )
 
 type DbContext struct {
@@ -18,7 +18,7 @@ type DbContext struct {
 var db *DbContext
 var connection sync.Once
 
-func NewOrGetSingleton(config *configuration.Configuration) *DbContext {
+func NewOrGetSingleton(config *configs.Configuration) *DbContext {
 	connection.Do(func() {
 		conn, err := Connect(config)
 		if err != nil {
@@ -31,7 +31,7 @@ func NewOrGetSingleton(config *configuration.Configuration) *DbContext {
 	return db
 }
 
-func Connect(config *configuration.Configuration) (*DbContext, error) {
+func Connect(config *configs.Configuration) (*DbContext, error) {
 	db = &DbContext{
 		maxPoolSize: config.Database.MaxPoolSize,
 	}

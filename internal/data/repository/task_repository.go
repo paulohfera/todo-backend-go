@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/paulohfera/todo-backend-go/data/db"
-	"github.com/paulohfera/todo-backend-go/domain/entity"
+	"github.com/paulohfera/todo-backend-go/internal/domain/entity"
+	db "github.com/paulohfera/todo-backend-go/pkg/postgres"
 )
 
 type TaskReposytory struct {
