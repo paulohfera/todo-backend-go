@@ -37,6 +37,22 @@ func TestTaskRepository(t *testing.T) {
 		}
 	})
 
+	t.Run("When get task list get a slice of task", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		tasks, err := taskReposytory.List(ctx)
+		if err != nil {
+			t.Errorf("Error getting task list.")
+		}
+
+		if tasks[0].ID == 0 {
+			t.Errorf("Error getting task list.")
+		}
+	})
+
 	t.Run("When insert valid task should not retunr error", func(t *testing.T) {
 		ctx := context.Background()
 		config := configuration.GetConfigurations()
@@ -51,19 +67,45 @@ func TestTaskRepository(t *testing.T) {
 		}
 	})
 
-	t.Run("When get task list get a slice of task", func(t *testing.T) {
+	t.Run("When update valid task should not retunr error", func(t *testing.T) {
 		ctx := context.Background()
 		config := configuration.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)
 
 		taskReposytory := repository.NewTaskReposytory(conn)
-		tasks, err := taskReposytory.List(ctx)
-		if err != nil {
-			t.Errorf("Error getting task list.")
-		}
+		task, _ := taskReposytory.Get(ctx, 1)
+		task.Title = "updated title"
+		task.Description = "updated description"
+		due := time.Now().AddDate(0, 1, 0)
+		task.Due = &due
 
-		if tasks[0].ID == 0 {
-			t.Errorf("Error getting task list.")
+		err := taskReposytory.Update(ctx, task)
+		if err != nil {
+			t.Errorf("Error updating task.")
+		}
+	})
+
+	t.Run("When id is valid should delete and not retunr error", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		err := taskReposytory.Delete(ctx, 2)
+		if err != nil {
+			t.Errorf("Error deleting a task.")
+		}
+	})
+
+	t.Run("When id is valid should complete and not retunr error", func(t *testing.T) {
+		ctx := context.Background()
+		config := configuration.GetConfigurations()
+		conn := db.NewOrGetSingleton(config)
+
+		taskReposytory := repository.NewTaskReposytory(conn)
+		err := taskReposytory.Complete(ctx, 3)
+		if err != nil {
+			t.Errorf("Error completing a task.")
 		}
 	})
 

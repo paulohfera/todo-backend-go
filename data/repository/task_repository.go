@@ -53,11 +53,47 @@ func (repository *TaskReposytory) List(ctx context.Context) ([]entity.Task, erro
 }
 
 func (repository *TaskReposytory) Add(ctx context.Context, item entity.Task) error {
-	sql := fmt.Sprintf(`insert into task (title, description, due, done, createdat)
-	values ('%v', '%v', $1, false, current_timestamp);`, item.Title, item.Description)
-	_, err := repository.Pool.Exec(ctx, sql, item.Due)
+	sql := `insert into task (title, description, due, done, createdat)
+			values ($1, $2, $3, false, current_timestamp);`
+	_, err := repository.Pool.Exec(ctx, sql, item.Title, item.Description, item.Due)
 	if err != nil {
 		return fmt.Errorf("TaskReposytory - Add - repository.Pool.Exec: %w", err)
+	}
+
+	return nil
+}
+
+func (repository *TaskReposytory) Update(ctx context.Context, item entity.Task) error {
+	sql := `update task
+			set title = $1,
+			description = $2,
+			due = $3,
+			done = $4,
+			updatedat = current_timestamp
+			where id = $5;`
+	_, err := repository.Pool.Exec(ctx, sql, item.Title, item.Description, item.Due, item.Done, item.ID)
+	if err != nil {
+		return fmt.Errorf("TaskReposytory - Update - repository.Pool.Exec: %w", err)
+	}
+
+	return nil
+}
+
+func (repository *TaskReposytory) Delete(ctx context.Context, ID int) error {
+	sql := `delete from task where id = $1;`
+	_, err := repository.Pool.Exec(ctx, sql, ID)
+	if err != nil {
+		return fmt.Errorf("TaskReposytory - Delete - repository.Pool.Exec: %w", err)
+	}
+
+	return nil
+}
+
+func (repository *TaskReposytory) Complete(ctx context.Context, ID int) error {
+	sql := `update task set done = true where id = $1;`
+	_, err := repository.Pool.Exec(ctx, sql, ID)
+	if err != nil {
+		return fmt.Errorf("TaskReposytory - Complete - repository.Pool.Exec: %w", err)
 	}
 
 	return nil
