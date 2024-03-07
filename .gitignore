@@ -17,6 +17,10 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# Configurations files
+.env
+/configuration/config.yml
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
