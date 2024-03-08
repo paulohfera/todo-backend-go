@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/paulohfera/todo-backend-go/domain/entity"
+	"github.com/paulohfera/todo-backend-go/internal/domain/entity"
 )
 
 type ITaskRepository interface {

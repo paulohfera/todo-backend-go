@@ -37,7 +37,7 @@ func TestTaskRepository(t *testing.T) {
 		}
 	})
 
-	t.Run("When get task list get a slice of task", func(t *testing.T) {
+	t.Run("When get task list get a slice of tasks", func(t *testing.T) {
 		ctx := context.Background()
 		config := configs.GetConfigurations()
 		conn := db.NewOrGetSingleton(config)

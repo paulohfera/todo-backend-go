@@ -53,8 +53,13 @@ setup-mac: ### setup mac os dependencies to run all tasks
 	brew install golangci-lint
 	brew install golang-migrate
 	# brew install openapi-generator
+	go install github.com/google/wire/cmd/wire@v0.6.0
 .PHONY: setup-mac
 
 test:
-	go test -v -coverpkg=./internal/... ./internal/tests/...
+	go test -v -coverpkg=./internal/... ./tests/...
 .PHONY: test
+
+wire:
+	wire ./internal/...
+.PHONY: wire

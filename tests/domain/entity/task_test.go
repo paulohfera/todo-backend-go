@@ -10,7 +10,7 @@ func TestDomainEntityTask(t *testing.T) {
 	t.Run("When mandatory parameters are missing task must retun not valid", func(t *testing.T) {
 		item := entity.NewTask("", "", nil)
 
-		got := item.Validate()
+		got := item.IsValid()
 		want := false
 
 		if got != want {
@@ -21,7 +21,7 @@ func TestDomainEntityTask(t *testing.T) {
 	t.Run("When all mandatory parameters are ok task must retun valid", func(t *testing.T) {
 		item := entity.NewTask("title", "description", nil)
 
-		got := item.Validate()
+		got := item.IsValid()
 		want := true
 
 		if got != want {
