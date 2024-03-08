@@ -12,7 +12,6 @@ import (
 )
 
 func TestTaskRepository(t *testing.T) {
-
 	t.Run("When get task 1 get one task", func(t *testing.T) {
 		ctx := context.Background()
 		config := configs.GetConfigurations()

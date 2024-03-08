@@ -16,8 +16,8 @@ func NewTaskReposytory(db *db.DbContext) *TaskReposytory {
 	return &TaskReposytory{db}
 }
 
-func (repository *TaskReposytory) Get(ctx context.Context, ID int) (entity.Task, error) {
-	sql := fmt.Sprintf("select * from task where id = %v", ID)
+func (repository *TaskReposytory) Get(ctx context.Context, id int) (entity.Task, error) {
+	sql := fmt.Sprintf("select * from task where id = %v", id)
 	var task entity.Task
 	row := repository.Pool.QueryRow(ctx, sql)
 	err := row.Scan(&task.ID, &task.Title, &task.Description, &task.Due, &task.Done, &task.CreatedAt, &task.UpdatedAt)
@@ -41,7 +41,7 @@ func (repository *TaskReposytory) List(ctx context.Context) ([]entity.Task, erro
 	var tasks []entity.Task
 	for rows.Next() {
 		var task entity.Task
-		err := rows.Scan(&task.ID, &task.Title, &task.Description, &task.Due, &task.Done, &task.CreatedAt, &task.UpdatedAt)
+		err = rows.Scan(&task.ID, &task.Title, &task.Description, &task.Due, &task.Done, &task.CreatedAt, &task.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("TaskReposytory - List - rows.Scan: %w", err)
 		}
@@ -79,9 +79,9 @@ func (repository *TaskReposytory) Update(ctx context.Context, item entity.Task) 
 	return nil
 }
 
-func (repository *TaskReposytory) Delete(ctx context.Context, ID int) error {
+func (repository *TaskReposytory) Delete(ctx context.Context, id int) error {
 	sql := `delete from task where id = $1;`
-	_, err := repository.Pool.Exec(ctx, sql, ID)
+	_, err := repository.Pool.Exec(ctx, sql, id)
 	if err != nil {
 		return fmt.Errorf("TaskReposytory - Delete - repository.Pool.Exec: %w", err)
 	}
@@ -89,9 +89,9 @@ func (repository *TaskReposytory) Delete(ctx context.Context, ID int) error {
 	return nil
 }
 
-func (repository *TaskReposytory) Complete(ctx context.Context, ID int) error {
+func (repository *TaskReposytory) Complete(ctx context.Context, id int) error {
 	sql := `update task set done = true where id = $1;`
-	_, err := repository.Pool.Exec(ctx, sql, ID)
+	_, err := repository.Pool.Exec(ctx, sql, id)
 	if err != nil {
 		return fmt.Errorf("TaskReposytory - Complete - repository.Pool.Exec: %w", err)
 	}

@@ -17,7 +17,6 @@ type Task struct {
 
 func (i *Task) IsValid() bool {
 	if i.Title == "" {
-
 		i.Notifications = append(i.Notifications, "Title cannot be empty")
 	}
 

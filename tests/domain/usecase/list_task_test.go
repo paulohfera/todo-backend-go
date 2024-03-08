@@ -26,5 +26,4 @@ func TestListTaskUseCase(t *testing.T) {
 			t.Errorf("Error getting task list.")
 		}
 	})
-
 }
