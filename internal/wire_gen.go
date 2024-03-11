@@ -12,10 +12,24 @@ import (
 	"github.com/paulohfera/todo-backend-go/internal/data/repository"
 	repository2 "github.com/paulohfera/todo-backend-go/internal/domain/interface/repository"
 	"github.com/paulohfera/todo-backend-go/internal/domain/usecase"
+	"github.com/paulohfera/todo-backend-go/internal/rest"
+	"github.com/paulohfera/todo-backend-go/internal/rest/handler"
+	"github.com/paulohfera/todo-backend-go/pkg/api"
 	"github.com/paulohfera/todo-backend-go/pkg/postgres"
 )
 
 // Injectors from wire.go:
+
+func RegisterServices() *api.Api {
+	configuration := configs.GetConfigurations()
+	dbContext := db.NewOrGetSingleton(configuration)
+	taskReposytory := repository.NewTaskReposytory(dbContext)
+	taskUseCase := usecase.NewTaskUseCase(taskReposytory)
+	taskHandler := handler.NewTaskHandler(taskUseCase)
+	restRest := rest.NewRestRouters(taskHandler)
+	apiApi := api.New(configuration, restRest)
+	return apiApi
+}
 
 func RegisterServicesUseCase() *usecase.TaskUseCase {
 	configuration := configs.GetConfigurations()
@@ -27,4 +41,6 @@ func RegisterServicesUseCase() *usecase.TaskUseCase {
 
 // wire.go:
 
-var providerSet wire.ProviderSet = wire.NewSet(db.NewOrGetSingleton, repository.NewTaskReposytory, usecase.NewTaskUseCase, wire.Bind(new(repository2.ITaskRepository), new(*repository.TaskReposytory)))
+var deps = []interface{}{}
+
+var providerSet wire.ProviderSet = wire.NewSet(db.NewOrGetSingleton, repository.NewTaskReposytory, usecase.NewTaskUseCase, handler.NewTaskHandler, rest.NewRestRouters, api.New, wire.Bind(new(repository2.ITaskRepository), new(*repository.TaskReposytory)))

@@ -36,7 +36,7 @@ func Connect(config *configs.Configuration) (*DbContext, error) {
 		maxPoolSize: config.Database.MaxPoolSize,
 	}
 
-	poolConfig, err := pgxpool.ParseConfig(config.URL)
+	poolConfig, err := pgxpool.ParseConfig(config.Database.URL)
 	if err != nil {
 		return nil, fmt.Errorf("postgres - NewPostgres - pgxpool.ParseConfig: %w", err)
 	}

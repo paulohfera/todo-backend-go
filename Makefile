@@ -24,6 +24,7 @@ build-win:
 
 clean:
 	go clean
+	go clean -cache
 	rm -rf bin
 .PHONY: clean
 
@@ -42,11 +43,11 @@ lint: ### check by golangci linter
 .PHONY: lint
 
 migrate-up: ### migration up
-	migrate -path migrations -database '$(PG_URL)?sslmode=disable' up
+	migrate -path migration -database '$(PG_URL)?sslmode=disable' up
 .PHONY: migrate-up
 
 run:
-	go run main.go
+	go run ./cmd/api-server/.
 .PHONY: run
 
 setup-mac: ### setup mac os dependencies to run all tasks

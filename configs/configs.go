@@ -10,6 +10,11 @@ import (
 type (
 	Configuration struct {
 		Database `yaml:"database"`
+		Http     `yaml:"http"`
+	}
+
+	Http struct {
+		Port string `yaml:"port"`
 	}
 
 	Database struct {

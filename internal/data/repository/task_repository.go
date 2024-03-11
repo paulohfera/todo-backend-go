@@ -29,8 +29,6 @@ func (repository *TaskReposytory) Get(ctx context.Context, id int) (entity.Task,
 }
 
 func (repository *TaskReposytory) List(ctx context.Context) ([]entity.Task, error) {
-	// defer repository.Close()
-
 	sql := "select * from task where done = false"
 	rows, err := repository.Pool.Query(ctx, sql)
 	if err != nil {

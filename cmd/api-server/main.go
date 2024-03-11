@@ -1,9 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"github.com/paulohfera/todo-backend-go/internal"
+	"github.com/paulohfera/todo-backend-go/pkg/api"
 )
 
 func main() {
-	fmt.Println("just hello")
+	api := internal.RegisterServices()
+	shutdown(api)
+}
+
+func shutdown(api *api.Api) {
 }
